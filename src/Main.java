@@ -21,43 +21,46 @@ public class Main {
         var subTask3 = new SubTask(6, "SubTask 3", "Description 6", 5);
         var epic2 = new Epic(7, "Epic 2", "Description 7");
 
-        var task1Id = taskManager.addTask(task1);
-        var task2Id = taskManager.addTask(task2);
-        var epicId = taskManager.addEpic(epic);
-        var epic2Id = taskManager.addEpic(epic2);
-        subTask1.setParentTaskId(epicId);
-        subTask2.setParentTaskId(epicId);
-        subTask3.setParentTaskId(epic2Id);
-        var subTask1Id = taskManager.addSubTask(subTask1);
-        var subTask2Id = taskManager.addSubTask(subTask2);
-        var subTask3Id = taskManager.addSubTask(subTask3);
+        taskManager.addTask(task1);
+        taskManager.addTask(task2);
+        taskManager.addEpic(epic);
+        taskManager.addEpic(epic2);
+        task1 = taskManager.getTasks().getFirst();
+        task2 = taskManager.getTasks().getLast();
+        epic = taskManager.getEpics().getFirst();
+        epic2 = taskManager.getEpics().getLast();
+        subTask1.setParentTaskId(epic.getId());
+        subTask2.setParentTaskId(epic.getId());
+        subTask3.setParentTaskId(epic2.getId());
+        taskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask2);
+        taskManager.addSubTask(subTask3);
+        subTask1 = taskManager.getSubTasks().getFirst();
+        subTask2 = taskManager.getSubTasks().get(1);
+        subTask3 = taskManager.getSubTasks().get(2);
 
         System.out.println("--------------------------------");
-        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getAllTasks());
         System.out.println("--------------------------------");
 
-        task1.setId(task1Id);
         task1.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateTask(task1);
 
-        subTask1.setId(subTask1Id);
         subTask1.setStatus(TaskStatus.DONE);
-        subTask2.setId(subTask2Id);
         subTask2.setStatus(TaskStatus.DONE);
         taskManager.updateSubTask(subTask1);
         taskManager.updateSubTask(subTask2);
 
-        subTask3.setId(subTask3Id);
         subTask3.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateSubTask(subTask3);
 
-        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getAllTasks());
         System.out.println("--------------------------------");
 
-        taskManager.deleteTask(task1Id);
-        taskManager.deleteEpic(epic2Id);
+        taskManager.deleteTask(task1.getId());
+        taskManager.deleteEpic(epic.getId());
 
-        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getAllTasks());
         System.out.println("--------------------------------");
 
     }
