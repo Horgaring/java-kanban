@@ -1,18 +1,21 @@
 package task;
+import task.history.HistoryManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TaskManager {
+public class InMemmoryTaskManager implements TaskManger {
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, SubTask> subTasks;
     private HashMap<Integer, Epic> epics;
     private int idCounter;
+    public HistoryManager historyManager;
 
-    public TaskManager() {
+    public InMemmoryTaskManager(HistoryManager historyManager) {
         this.tasks = new HashMap<>();
         this.subTasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.idCounter = 0;
+        this.historyManager = historyManager;
     }
 
     public void clear() {
@@ -41,15 +44,21 @@ public class TaskManager {
     }
     
     public Task getTask(int id) {
-        return tasks.get(id);
+        var task = tasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     public Task getSubTask(int id) {
-        return subTasks.get(id);
+        var task = subTasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     public Task getEpic(int id) {
-        return epics.get(id);
+        var task = epics.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     public void addTask(Task task) {
@@ -150,4 +159,5 @@ public class TaskManager {
 
         return res;
     }
+
 }
