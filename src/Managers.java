@@ -1,14 +1,14 @@
-import task.InMemmoryTaskManager;
+import task.InMemoryTaskManager;
 import task.TaskManger;
 import task.history.HistoryManager;
-import task.history.InMemmoryHistoryManager;
+import task.history.InMemoryHistoryManager;
 
 public class Managers {
     public static TaskManger getDefault() {
-        return new InMemmoryTaskManager(getDefaultHistory());
+        return new InMemoryTaskManager(getDefaultHistory());
    }
 
     public static HistoryManager getDefaultHistory() {
-        return new InMemmoryHistoryManager();
+        return new InMemoryHistoryManager();
     }
 }

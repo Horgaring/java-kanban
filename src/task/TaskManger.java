@@ -1,17 +1,17 @@
 package task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManger {
     public void clear();
 
-    public ArrayList<Task> getAllTasks();
+    public List<Task> getAllTasks();
 
-    public ArrayList<Task> getTasks();
+    public List<Task> getTasks();
 
-    public ArrayList<SubTask> getSubTasks();
+    public List<SubTask> getSubTasks();
 
-    public ArrayList<Epic> getEpics();
+    public List<Epic> getEpics();
 
     public Task getTask(int id);
 
@@ -37,5 +37,7 @@ public interface TaskManger {
 
     public void deleteEpic(Integer id);
 
-    public ArrayList<SubTask> getSubTasksByEpicId(int epicId);
+    public List<SubTask> getSubTasksByEpicId(int epicId);
+
+    public List<Task> getHistory();
 }
