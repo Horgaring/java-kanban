@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import task.Task;
 import task.history.HistoryManager;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HistoryManagerTest {
@@ -19,10 +21,10 @@ public class HistoryManagerTest {
             historyManager.add(new Task(i, "Task " + i, ""));
         }
 
-        Task[] history = historyManager.getHistory();
+        List<Task> history = historyManager.getHistory();
 
-        assertEquals("Task 12", history[0].getName());
-        assertEquals("Task 3", history[9].getName());
+        assertEquals("Task 12", history.get(0).getName());
+        assertEquals("Task 3", history.get(9).getName());
 
     }
 }
