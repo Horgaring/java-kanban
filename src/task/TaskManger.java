@@ -3,41 +3,41 @@ package task;
 import java.util.List;
 
 public interface TaskManger {
-    public void clear();
+    void clear();
 
-    public List<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    public List<Task> getTasks();
+    List<Task> getTasks();
 
-    public List<SubTask> getSubTasks();
+    List<SubTask> getSubTasks();
 
-    public List<Epic> getEpics();
+    List<Epic> getEpics();
 
-    public Task getTask(int id);
+    Task getTask(int id);
 
-    public Task getSubTask(int id);
+    Task getSubTask(int id);
 
-    public Task getEpic(int id);
+    Task getEpic(int id);
 
-    public void addTask(Task task);
+    void addTask(Task task);
 
-    public void addEpic(Epic task);
+    void addEpic(Epic task);
 
-    public void addSubTask(SubTask task);
+    void addSubTask(SubTask task);
 
-    public void updateTask(Task task);
+    void updateTask(Task task);
 
-    public void updateSubTask(SubTask task);
+    void updateSubTask(SubTask task);
 
-    public void updateEpic(Epic task);
+    void updateEpic(Epic task);
 
-    public void deleteTask(Integer id);
+    void deleteTask(Integer id);
 
-    public void deleteSubTask(Integer id);
+    void deleteSubTask(Integer id);
 
-    public void deleteEpic(Integer id);
+    void deleteEpic(Integer id);
 
-    public List<SubTask> getSubTasksByEpicId(int epicId);
+    List<SubTask> getSubTasksByEpicId(int epicId);
 
-    public List<Task> getHistory();
+    List<Task> getHistory();
 }
