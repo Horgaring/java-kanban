@@ -5,7 +5,7 @@ import java.util.*;
 
 public class MyLinkedHashMap<K, V> implements Map<K, V> {
 
-    private Node<V>  head;
+    private Node<V> head;
     private Node<V> tail;
     private final HashMap<K, Node<V>> hashMap;
 
@@ -57,11 +57,11 @@ public class MyLinkedHashMap<K, V> implements Map<K, V> {
         var next = head;
         while (next != null) {
             if (next.value != null
-                && next.value.equals(value)) {
+                    && next.value.equals(value)) {
                 return true;
             } else {
                 if (next.value == null
-                    && value == null) {
+                        && value == null) {
                     return true;
                 }
                 next = next.next;
@@ -119,7 +119,7 @@ public class MyLinkedHashMap<K, V> implements Map<K, V> {
             if (head != null) {
                 head.prev = null;
             }
-        } else  {
+        } else {
             i.prev.next = i.next;
             i.next.prev = i.prev;
         }

@@ -1,11 +1,13 @@
 package history;
+
 import task.Task;
 import utils.collection.MyLinkedHashMap;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final MyLinkedHashMap<Integer,Task> history;
+    private final MyLinkedHashMap<Integer, Task> history;
 
     public InMemoryHistoryManager() {
         history = new MyLinkedHashMap<>();
