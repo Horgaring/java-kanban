@@ -95,7 +95,7 @@ public class InMemoryTaskManager implements TaskManger {
         updateEpicStatus(epic);
     }
 
-    private void updateEpicStatus(Epic epic){
+    private void updateEpicStatus(Epic epic) {
         boolean allDone = true;
         boolean allNew = true;
         var subTaskIds = epic.getSubTasks();
