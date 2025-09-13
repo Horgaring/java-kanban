@@ -1,7 +1,7 @@
 import task.InMemoryTaskManager;
 import task.TaskManger;
-import task.history.HistoryManager;
-import task.history.InMemoryHistoryManager;
+import history.HistoryManager;
+import history.InMemoryHistoryManager;
 
 public class Managers {
     public static TaskManger getDefault() {

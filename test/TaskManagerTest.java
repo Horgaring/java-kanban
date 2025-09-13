@@ -1,9 +1,7 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.*;
-import task.history.HistoryManager;
 
 public class TaskManagerTest {
     private static TaskManger taskManger;
