@@ -2,36 +2,15 @@ package history;
 
 import task.Task;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class InMemoryHistoryManager implements HistoryManager {
+    private final HashMap<Integer, Node<Task>> hashMap;
     private Node<Task> head;
     private Node<Task> tail;
-    private final HashMap<Integer, Node<Task>> hashMap;
-
-    class Node<V> {
-        Node<V> next;
-        Node<V> prev;
-        V value;
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            Node<V> node = (Node<V>) o;
-            return Objects.equals(next, node.next) && Objects.equals(prev, node.prev) && Objects.equals(value, node.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(next, prev, value);
-        }
-
-        public Node(V value, Node<V> prev, Node<V> next) {
-            this.value = value;
-            this.prev = prev;
-            this.next = next;
-        }
-    }
 
     public InMemoryHistoryManager() {
         hashMap = new HashMap<>();
@@ -47,7 +26,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return list;
     }
-
 
     @Override
     public void add(Task value) {
@@ -67,7 +45,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             tail.next = newTail;
             tail = newTail;
         }
-        hashMap.put(value.getId() , newTail);
+        hashMap.put(value.getId(), newTail);
     }
 
     @Override
@@ -91,6 +69,30 @@ public class InMemoryHistoryManager implements HistoryManager {
             i.next.prev = i.prev;
         }
         hashMap.remove(key);
+    }
+
+    class Node<V> {
+        Node<V> next;
+        Node<V> prev;
+        V value;
+
+        public Node(V value, Node<V> prev, Node<V> next) {
+            this.value = value;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Node<V> node = (Node<V>) o;
+            return Objects.equals(next, node.next) && Objects.equals(prev, node.prev) && Objects.equals(value, node.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(next, prev, value);
+        }
     }
 
 }
