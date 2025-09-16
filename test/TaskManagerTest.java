@@ -1,9 +1,7 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.*;
-import task.history.HistoryManager;
 
 public class TaskManagerTest {
     private static TaskManger taskManger;
@@ -104,7 +102,7 @@ public class TaskManagerTest {
         var subTask = new SubTask(0, "Subtask", "Subtask Description", epic.getId());
         taskManger.addSubTask(subTask);
 
-        SubTask savedSubTask = (SubTask)taskManger.getSubTask(subTask.getId());
+        SubTask savedSubTask = (SubTask) taskManger.getSubTask(subTask.getId());
 
         Assertions.assertNotNull(savedSubTask, "Подзадача должна быть найдена по id");
         Assertions.assertEquals("Subtask", savedSubTask.getName());

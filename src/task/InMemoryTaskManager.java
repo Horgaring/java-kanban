@@ -1,5 +1,7 @@
 package task;
-import task.history.HistoryManager;
+
+import history.HistoryManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +97,7 @@ public class InMemoryTaskManager implements TaskManger {
         updateEpicStatus(epic);
     }
 
-    private void updateEpicStatus(Epic epic){
+    private void updateEpicStatus(Epic epic) {
         boolean allDone = true;
         boolean allNew = true;
         var subTaskIds = epic.getSubTasks();
@@ -162,9 +164,11 @@ public class InMemoryTaskManager implements TaskManger {
     @Override
     public void deleteEpic(Integer id) {
         var subTaskIds = epics.get(id).getSubTasks();
+
         for (int subTaskId : subTaskIds) {
             subTasks.remove(subTaskId);
         }
+
         epics.remove(id);
     }
 
