@@ -12,8 +12,12 @@ public class Managers {
         return new InMemoryTaskManager(getDefaultHistory());
     }
 
-    public static TaskManager getFileBackend() throws IOException {
-        return new FileBackedTaskManager(getDefaultHistory(), Files.createTempFile("tasks", ".csv"));
+    public static TaskManager getFileBacked() {
+        try {
+            return new FileBackedTaskManager(getDefaultHistory(), Files.createTempFile("tasks", ".csv"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static HistoryManager getDefaultHistory() {

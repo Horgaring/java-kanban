@@ -9,12 +9,12 @@ import task.manager.FileBackedTaskManager;
 
 import java.io.IOException;
 
-public class FileBackendTaskManagerTest {
+public class FileBackedTaskManagerTest {
     private static FileBackedTaskManager taskManger;
 
     @BeforeEach
     void setup() throws IOException {
-        taskManger = (FileBackedTaskManager) Managers.getFileBackend();
+        taskManger = (FileBackedTaskManager) Managers.getFileBacked();
     }
 
     @Test

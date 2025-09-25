@@ -60,7 +60,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return path;
     }
 
-    public void save() {
+    private void save() {
         try (var writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE)) {
             writer.write("id,type,name,status,description,epic\n");
 
