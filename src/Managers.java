@@ -4,20 +4,15 @@ import task.manager.FileBackedTaskManager;
 import task.manager.InMemoryTaskManager;
 import task.manager.TaskManager;
 
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Managers {
     public static TaskManager getDefault() {
         return new InMemoryTaskManager(getDefaultHistory());
     }
 
-    public static TaskManager getFileBacked() {
-        try {
-            return new FileBackedTaskManager(getDefaultHistory(), Files.createTempFile("tasks", ".csv"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static TaskManager getFileBacked(Path path) {
+        return new FileBackedTaskManager(getDefaultHistory(), path);
     }
 
     public static HistoryManager getDefaultHistory() {

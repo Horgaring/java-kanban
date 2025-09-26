@@ -8,13 +8,14 @@ import task.TaskStatus;
 import task.manager.FileBackedTaskManager;
 
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class FileBackedTaskManagerTest {
     private static FileBackedTaskManager taskManger;
 
     @BeforeEach
     void setup() throws IOException {
-        taskManger = (FileBackedTaskManager) Managers.getFileBacked();
+        taskManger = (FileBackedTaskManager) Managers.getFileBacked(Files.createTempFile("tasks", ".csv"));
     }
 
     @Test
