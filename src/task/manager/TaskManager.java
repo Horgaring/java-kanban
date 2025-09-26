@@ -1,8 +1,12 @@
-package task;
+package task.manager;
+
+import task.Epic;
+import task.SubTask;
+import task.Task;
 
 import java.util.List;
 
-public interface TaskManger {
+public interface TaskManager {
     void clear();
 
     List<Task> getAllTasks();
