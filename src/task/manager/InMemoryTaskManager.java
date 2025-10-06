@@ -1,13 +1,17 @@
-package task;
+package task.manager;
 
 import history.HistoryManager;
+import task.Epic;
+import task.SubTask;
+import task.Task;
+import task.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryTaskManager implements TaskManger {
+public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Task> tasks;
     private Map<Integer, SubTask> subTasks;
     private Map<Integer, Epic> epics;

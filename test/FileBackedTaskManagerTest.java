@@ -5,14 +5,17 @@ import task.Epic;
 import task.SubTask;
 import task.Task;
 import task.TaskStatus;
-import task.manager.TaskManager;
+import task.manager.FileBackedTaskManager;
 
-public class TaskManagerTest {
-    private static TaskManager taskManger;
+import java.io.IOException;
+import java.nio.file.Files;
+
+public class FileBackedTaskManagerTest {
+    private static FileBackedTaskManager taskManger;
 
     @BeforeEach
-    void setup() {
-        taskManger = Managers.getDefault();
+    void setup() throws IOException {
+        taskManger = (FileBackedTaskManager) Managers.getFileBacked(Files.createTempFile("tasks", ".csv"));
     }
 
     @Test
@@ -111,5 +114,19 @@ public class TaskManagerTest {
         Assertions.assertNotNull(savedSubTask, "Подзадача должна быть найдена по id");
         Assertions.assertEquals("Subtask", savedSubTask.getName());
         Assertions.assertEquals(epic.getId(), savedSubTask.getParentTaskId(), "ID эпика должен совпадать");
+    }
+
+    @Test
+    void shouldSerializeAndDeserializeManager() {
+        var epic = new Epic(0, "Parent Epic", "Epic for subtask");
+        taskManger.addEpic(epic);
+
+        var subTask = new SubTask(0, "Subtask", "Subtask Description", epic.getId());
+        taskManger.addSubTask(subTask);
+
+        var newManager = FileBackedTaskManager.loadFromFile(taskManger.getPath(), Managers.getDefaultHistory());
+
+        Assertions.assertEquals(newManager.getEpic(epic.getId()), taskManger.getEpic(epic.getId()));
+        Assertions.assertEquals(newManager.getSubTask(subTask.getId()), taskManger.getSubTask(subTask.getId()));
     }
 }
