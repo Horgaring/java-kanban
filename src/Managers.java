@@ -1,8 +1,8 @@
-import history.HistoryManager;
-import history.InMemoryHistoryManager;
-import task.manager.FileBackedTaskManager;
-import task.manager.InMemoryTaskManager;
-import task.manager.TaskManager;
+import manager.FileBackedTaskManager;
+import manager.InMemoryTaskManager;
+import manager.TaskManager;
+import manager.history.HistoryManager;
+import manager.history.InMemoryHistoryManager;
 
 import java.nio.file.Path;
 
