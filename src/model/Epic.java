@@ -26,7 +26,6 @@ public class Epic extends Task {
     }
 
 
-
     public void setStartTimeAndDuration(LocalDateTime startTime, Duration duration) {
         this.startTime = startTime;
         this.duration = duration;
