@@ -7,6 +7,8 @@ import model.SubTask;
 import model.Task;
 import model.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,6 @@ public class InMemoryTaskManager implements TaskManager {
     private HistoryManager historyManager;
     private Set<Task> sortedTasks;
     private Set<SubTask> sortedSubTasks;
-    private Set<Epic> sortedEpics;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.tasks = new HashMap<>();
@@ -26,7 +27,6 @@ public class InMemoryTaskManager implements TaskManager {
         this.epics = new HashMap<>();
         sortedTasks = new TreeSet<>();
         sortedSubTasks = new TreeSet<>();
-        sortedEpics = new TreeSet<>();
         this.idCounter = 0;
         this.historyManager = historyManager;
     }
@@ -47,16 +47,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public Set<Task> getPrioritizedTasks() {
-        return sortedTasks;
+        return new TreeSet<>(tasks.values());
     }
 
     public Set<SubTask> getPrioritizedSubTasks() {
-        return sortedSubTasks;
+        return new TreeSet<>(subTasks.values());
     }
 
-    public Set<Epic> getPrioritizedEpics() {
-        return sortedEpics;
-    }
 
     @Override
     public List<Task> getTasks() {
@@ -103,10 +100,14 @@ public class InMemoryTaskManager implements TaskManager {
         return Optional.of(task);
     }
 
+    private <T extends Task> Optional<T> findTaskOverlappingWith(T task, Set<T> tasks) {
+        return tasks.stream()
+                .filter(p -> hasIntersectionBetween(task, p)).findFirst();
+    }
+
     @Override
     public void addTask(Task task) throws TimeIntervalConflictException {
-        var hasIntersection = getPrioritizedTasks().stream()
-                .filter(p -> hasIntersectionBetween(task, p)).findFirst();
+        var hasIntersection = findTaskOverlappingWith(task, sortedTasks);
         if (hasIntersection.isPresent()) {
             throw new TimeIntervalConflictException(
                     String.format("Конфликт: задача '%s' пересекается с '%s'",
@@ -123,14 +124,12 @@ public class InMemoryTaskManager implements TaskManager {
     public void addEpic(Epic task) {
         epics.put(idCounter, task);
         task.setId(idCounter);
-        sortedEpics.add(task);
         idCounter++;
     }
 
     @Override
     public void addSubTask(SubTask task) throws TimeIntervalConflictException {
-        var hasIntersection = getPrioritizedSubTasks().stream()
-                .filter(p -> hasIntersectionBetween(task, p)).findFirst();
+        var hasIntersection = findTaskOverlappingWith(task, sortedSubTasks);
         if (hasIntersection.isPresent()) {
             throw new TimeIntervalConflictException(
                     String.format("Конфликт: задача '%s' пересекается с '%s'",
@@ -144,9 +143,10 @@ public class InMemoryTaskManager implements TaskManager {
         epic.addSubTask(task);
         sortedSubTasks.add(task);
         updateEpicStatus(epic);
+        updateEpicTimes(epic);
     }
 
-    public boolean hasIntersectionBetween(Task t1, Task t2) {
+    private boolean hasIntersectionBetween(Task t1, Task t2) {
         return t1.getStartTime().isBefore(t2.getStartTime()) && t1.getEndTime().isAfter(t2.getStartTime())
                 || t1.getStartTime().isBefore(t2.getEndTime()) && t1.getEndTime().isAfter(t2.getEndTime());
     }
@@ -175,6 +175,13 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    private void updateEpicTimes(Epic epic) {
+        var epicSubtasks = sortedSubTasks.stream()
+                .filter(t -> t.getParentTaskId() == epic.getId()).toList();
+        var startTime = epicSubtasks.getFirst().getStartTime();
+        epic.setStartTimeAndDuration(startTime, Duration.between(startTime, epicSubtasks.getLast().getEndTime()));
+    }
+
     @Override
     public void updateTask(Task task) {
         tasks.put(task.getId(), task);
@@ -191,6 +198,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (oldSubTask.getParentTaskId() != task.getParentTaskId()) {
             var oldEpic = epics.get(oldSubTask.getParentTaskId());
             oldEpic.removeSubTask(task.getId());
+            updateEpicStatus(oldEpic);
         }
         subTasks.put(task.getId(), task);
         updateEpicStatus(epics.get(task.getParentTaskId()));
@@ -213,6 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
         var epic = epics.get(epicId);
         epic.removeSubTask(epicId);
         updateEpicStatus(epics.get(epicId));
+        updateEpicTimes(epics.get(epicId));
     }
 
     @Override

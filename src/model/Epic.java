@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Epic extends Task {
     private List<Integer> subTasks;
-    private LocalDateTime endTime;
 
     public Epic(int id, String name, String description) {
         super(id, name, description, LocalDateTime.now(), Duration.ZERO);
@@ -20,29 +19,19 @@ public class Epic extends Task {
 
     public void addSubTask(SubTask subTask) {
         subTasks.add(subTask.getId());
-        updateTimes(subTask);
     }
 
     public void removeSubTask(Integer subTask) {
         subTasks.remove(subTask);
     }
 
-    private void updateTimes(SubTask newSubTask) {
-        if (startTime.isAfter(newSubTask.getStartTime())) {
-            startTime = newSubTask.getStartTime();
-        }
-        if (endTime == null) {
-            endTime = newSubTask.getEndTime();
-        } else if (endTime.isBefore(newSubTask.getEndTime())) {
-            endTime = newSubTask.getEndTime();
-        }
-        duration = Duration.between(startTime, endTime);
+
+
+    public void setStartTimeAndDuration(LocalDateTime startTime, Duration duration) {
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
-    @Override
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
 
     @Override
     public String toString() {
