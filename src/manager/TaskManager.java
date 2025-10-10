@@ -1,10 +1,11 @@
-package task.manager;
+package manager;
 
-import task.Epic;
-import task.SubTask;
-import task.Task;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskManager {
     void clear();
@@ -17,11 +18,11 @@ public interface TaskManager {
 
     List<Epic> getEpics();
 
-    Task getTask(int id);
+    Optional<Task> getTask(int id);
 
-    Task getSubTask(int id);
+    Optional<SubTask> getSubTask(int id);
 
-    Task getEpic(int id);
+    Optional<Epic> getEpic(int id);
 
     void addTask(Task task);
 

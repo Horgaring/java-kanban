@@ -1,16 +1,19 @@
-package task.manager;
+package manager;
 
-import history.HistoryManager;
-import task.Epic;
-import task.SubTask;
-import task.Task;
-import task.TaskStatus;
+import exception.ManagerSaveException;
+import manager.history.HistoryManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -33,12 +36,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
                 switch (split[1]) {
                     case "TASK" -> {
-                        var task = new Task(Integer.parseInt(split[0]), split[2], split[4]);
+                        var task = new Task(
+                                Integer.parseInt(split[0]),
+                                split[2],
+                                split[4],
+                                LocalDateTime.parse(split[5]),
+                                Duration.ofMinutes(Long.parseLong(split[6]))
+                        );
                         task.setStatus(TaskStatus.valueOf(split[3]));
                         manager.addTask(task);
                     }
                     case "SUBTASK" -> {
-                        var task = new SubTask(Integer.parseInt(split[0]), split[2], split[4], Integer.parseInt(split[5]));
+                        var task = new SubTask(
+                                Integer.parseInt(split[0]),
+                                split[2],
+                                split[4],
+                                Integer.parseInt(split[7]),
+                                LocalDateTime.parse(split[5]),
+                                Duration.ofMinutes(Long.parseLong(split[6]))
+                        );
                         task.setStatus(TaskStatus.valueOf(split[3]));
                         manager.addSubTask(task);
                     }
@@ -62,14 +78,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (var writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE)) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,start,duration,epic\n");
 
             for (var task : super.getTasks()) {
                 writer.write(task.getId() + "," +
                         "TASK" + "," +
                         task.getName() + "," +
                         task.getStatus() + "," +
-                        task.getDescription() + "," + "\n");
+                        task.getDescription() + "," +
+                        task.getStartTime() + "," +
+                        task.getDuration().toMinutes() + "," + "\n");
             }
 
             for (var task : super.getEpics()) {
@@ -77,7 +95,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         "EPIC" + "," +
                         task.getName() + "," +
                         task.getStatus() + "," +
-                        task.getDescription() + "," + "\n");
+                        task.getDescription() + "," +
+                        task.getStartTime() + "," +
+                        task.getDuration().toMinutes() + "," + "\n");
             }
 
             for (var task : super.getSubTasks()) {
@@ -86,6 +106,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         task.getName() + "," +
                         task.getStatus() + "," +
                         task.getDescription() + "," +
+                        task.getStartTime() + "," +
+                        task.getDuration().toMinutes() + "," +
                         task.getParentTaskId() + "\n");
             }
         } catch (IOException e) {

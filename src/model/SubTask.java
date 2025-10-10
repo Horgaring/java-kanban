@@ -1,10 +1,13 @@
-package task;
+package model;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class SubTask extends Task {
     private int parentTaskId;
 
-    public SubTask(int id, String name, String description, int parentTaskId) {
-        super(id, name, description);
+    public SubTask(int id, String name, String description, int parentTaskId, LocalDateTime startTime, Duration duration) {
+        super(id, name, description, startTime, duration);
         this.parentTaskId = parentTaskId;
     }
 

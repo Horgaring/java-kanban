@@ -1,9 +1,11 @@
+import manager.history.HistoryManager;
+import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.Task;
-import history.HistoryManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +23,7 @@ public class HistoryManagerTest {
     @Test
     void shouldReturnLast12TasksWhen12TasksAdded() {
         for (int i = 1; i <= 12; i++) {
-            historyManager.add(new Task(i, "Task " + i, ""));
+            historyManager.add(new Task(i, "Task " + i, "", LocalDateTime.now(), Duration.ofHours(i)));
         }
 
         List<Task> history = historyManager.getHistory();
@@ -33,7 +35,7 @@ public class HistoryManagerTest {
 
     @Test
     void shouldRemoveElementCorrectly() {
-        Task task = new Task(1, "Test Task", "Description");
+        Task task = new Task(1, "Test Task", "Description", LocalDateTime.now(), Duration.ofHours(1));
         historyManager.add(task);
 
         historyManager.remove(1);
@@ -50,9 +52,9 @@ public class HistoryManagerTest {
 
     @Test
     void shouldMaintainOrderAfterRemoval() {
-        Task task1 = new Task(1, "First", "Description 1");
-        Task task2 = new Task(2, "Second", "Description 2");
-        Task task3 = new Task(3, "Third", "Description 3");
+        Task task1 = new Task(1, "First", "Description 1", LocalDateTime.now(), Duration.ofHours(1));
+        Task task2 = new Task(2, "Second", "Description 2", LocalDateTime.now(), Duration.ofHours(2));
+        Task task3 = new Task(3, "Third", "Description 3", LocalDateTime.now(), Duration.ofHours(3));
 
         historyManager.add(task1);
         historyManager.add(task2);
