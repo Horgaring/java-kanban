@@ -18,14 +18,12 @@ public class InMemoryTaskManager implements TaskManager {
     private int idCounter;
     private HistoryManager historyManager;
     private Set<Task> sortedTasks;
-    private Set<SubTask> sortedSubTasks;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.tasks = new HashMap<>();
         this.subTasks = new HashMap<>();
         this.epics = new HashMap<>();
         sortedTasks = new TreeSet<>();
-        sortedSubTasks = new TreeSet<>();
         this.idCounter = 0;
         this.historyManager = historyManager;
     }
@@ -47,10 +45,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     public Set<Task> getPrioritizedTasks() {
         return new TreeSet<>(tasks.values());
-    }
-
-    public Set<SubTask> getPrioritizedSubTasks() {
-        return new TreeSet<>(subTasks.values());
     }
 
 
@@ -128,7 +122,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubTask(SubTask task) throws TimeIntervalConflictException {
-        var hasIntersection = findTaskOverlappingWith(task, sortedSubTasks);
+        var hasIntersection = findTaskOverlappingWith(task, sortedTasks);
         if (hasIntersection.isPresent()) {
             throw new TimeIntervalConflictException(
                     String.format("Конфликт: задача '%s' пересекается с '%s'",
@@ -140,7 +134,7 @@ public class InMemoryTaskManager implements TaskManager {
         idCounter++;
         var epic = epics.get(task.getParentTaskId());
         epic.addSubTask(task);
-        sortedSubTasks.add(task);
+        sortedTasks.add(task);
         updateEpicStatus(epic);
         updateEpicTimes(epic);
     }
@@ -175,7 +169,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void updateEpicTimes(Epic epic) {
-        var epicSubtasks = sortedSubTasks.stream()
+        var epicSubtasks = sortedTasks.stream()
+                .filter(t -> t instanceof SubTask)
+                .map(t -> (SubTask) t)
                 .filter(t -> t.getParentTaskId() == epic.getId()).toList();
         var startTime = epicSubtasks.getFirst().getStartTime();
         epic.setStartTimeAndDuration(startTime, Duration.between(startTime, epicSubtasks.getLast().getEndTime()));
