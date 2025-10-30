@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Task implements Comparable<Task> {
     protected Duration duration;
     protected LocalDateTime startTime;
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private TaskStatus status;
@@ -34,7 +34,7 @@ public class Task implements Comparable<Task> {
         return startTime.plus(duration);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

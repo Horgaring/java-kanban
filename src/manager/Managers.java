@@ -1,6 +1,5 @@
-import manager.FileBackedTaskManager;
-import manager.InMemoryTaskManager;
-import manager.TaskManager;
+package manager;
+
 import manager.history.HistoryManager;
 import manager.history.InMemoryHistoryManager;
 

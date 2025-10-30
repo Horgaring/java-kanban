@@ -47,6 +47,21 @@ public class InMemoryTaskManager implements TaskManager {
         return new TreeSet<>(tasks.values());
     }
 
+    @Override
+    public void deleteTasks() {
+        tasks.clear();
+    }
+
+    @Override
+    public void deleteSubtasks() {
+        subTasks.clear();
+    }
+
+    @Override
+    public void deleteEpics() {
+        epics.clear();
+    }
+
 
     @Override
     public List<Task> getTasks() {
