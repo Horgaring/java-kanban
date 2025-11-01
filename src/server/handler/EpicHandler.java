@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import exception.TimeIntervalConflictException;
 import manager.TaskManager;
 import model.Epic;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-public class EpicHandler extends BaseHttpHandler implements HttpHandler {
+public class EpicHandler extends BaseHttpHandler {
 
     public EpicHandler(TaskManager taskManager, Gson gson) {
         super(taskManager, gson);

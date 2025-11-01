@@ -3,7 +3,7 @@ import server.HttpTaskServer;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-       var a =  new HttpTaskServer(Managers.getDefault());
+       var a =  new HttpTaskServer(Managers.getDefault(),  Managers.getDefaultGsonBuilder());
 
         a.start();
 

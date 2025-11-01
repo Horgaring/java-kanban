@@ -33,7 +33,7 @@ public class HttpTaskManagerSubTasksTest {
     private Gson gson;
 
     public HttpTaskManagerSubTasksTest() throws IOException {
-        taskServer = new HttpTaskServer(manager);
+        taskServer = new HttpTaskServer(manager, Managers.getDefaultGsonBuilder());
         this.gson = taskServer.getGson();
     }
 

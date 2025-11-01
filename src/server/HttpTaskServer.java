@@ -4,27 +4,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import manager.TaskManager;
-import server.adapter.DurationAdapter;
-import server.adapter.LocalDateTimeAdapter;
 import server.handler.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class HttpTaskServer {
-    static  final int PORT = 8080;
+    static final int PORT = 8080;
     private HttpServer server;
     private TaskManager taskManager;
     private Gson gson;
 
-    public HttpTaskServer(TaskManager manager) throws IOException {
+    public HttpTaskServer(TaskManager manager, GsonBuilder builder) throws IOException {
         taskManager = manager;
-        gson = new GsonBuilder()
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        gson = builder.create();
 
         this.server = HttpServer.create();
         server.bind(new InetSocketAddress(PORT), 0);

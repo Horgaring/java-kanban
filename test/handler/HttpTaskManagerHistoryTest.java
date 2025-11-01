@@ -32,7 +32,7 @@ public class HttpTaskManagerHistoryTest {
     private Gson gson;
 
     public HttpTaskManagerHistoryTest() throws IOException {
-        taskServer = new HttpTaskServer(manager);
+        taskServer = new HttpTaskServer(manager, Managers.getDefaultGsonBuilder());
         this.gson = taskServer.getGson();
     }
 
